@@ -5,170 +5,151 @@
   <title> Control Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 0 10px 40px;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      justify-content: space-between;
-    }
-    h1 {
-      margin-top: 30px;
-      font-size: 1.8rem;
-    }
-    .relay-card {
-      display: inline-block;
-      background-color: white;
-      padding: 20px;
-      margin: 15px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      width: 220px;
-      vertical-align: top;
-    }
-    .relay-card h2 {
-      margin-bottom: 10px;
-      font-size: 1.3rem;
-    }
-    .relay-card p {
-      margin-bottom: 10px;
-      font-size: 1rem;
-    }
-    .relay-card button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      color: white;
-      background-color: blue;
-      cursor: pointer;
-      font-size: 16px;
-	  width: 90%;
-      transition: opacity 0.3s ease;
-    }
-    .relay-card button:hover {
-      opacity: 0.8;
-    }
-    #allOffBtn, #logoutBtn {
-      max-width: 300px;
-      width: 90%;
-      padding: 12px 25px;
-      font-size: 16px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      margin: 15px auto;
-      display: block;
-      color: white;
-      transition: opacity 0.3s ease;
-    }
-    #allOffBtn {
-      background-color: #d32f2f;
-    }
-    #allOffBtn:hover {
-      opacity: 0.8;
-    }
-    #logoutBtn {
-      background-color: #555;
-    }
-    #logoutBtn:hover {
-      opacity: 0.8;
-    }
+	  * {
+  box-sizing: border-box;
+}
 
-    /* Responsive layout */
-    #dashboard {
-      display: none;
-    }
-    #loginForm {
-      max-width: 400px;
-      margin: 80px auto 20px;
-      background: white;
-      padding: 30px 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    #loginForm input {
-      width: 100%;
-      padding: 12px 15px;
-      margin: 10px 0 20px;
-      font-size: 1rem;
-      border: 1.5px solid #ccc;
-      border-radius: 10px;
-      box-sizing: border-box;
-      outline-offset: 2px;
-      transition: border-color 0.3s ease;
-    }
-    #loginForm input:focus {
-      border-color: #1e88e5;
-    }
-    #loginForm button {
-      width: 100%;
-      background-color: #1e88e5;
-      color: white;
-      padding: 12px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    #loginForm button:hover {
-      background-color: #1565c0;
-    }
-    #dashboard .relay-container {
-      max-width: 960px;
-      margin: 20px auto 0;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    /* Smaller devices */
-    @media (max-width: 700px) {
-      .relay-card {
-        width: 90%;
-        margin: 10px auto;
-        display: block;
-      }
-      body {
-        padding: 0 10px 60px;
-      }
-    }
-    footer {
-      font-size: 0.9rem;
-      color: #666;
-      padding: 10px 0;
-      margin-top: 40px;
-    }
-	  body {
+body {
+  font-family: "Segoe UI", Roboto, sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #fff;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  margin: 0;
 }
 
-main {
-  flex: 1;
+/* TITLE */
+h1 {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 2rem;
+  font-weight: 600;
 }
 
+/* LOGIN */
+#loginForm {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+#loginForm input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+#loginForm button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #3b82f6;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#loginForm button:hover {
+  background: #2563eb;
+}
+
+/* DASHBOARD */
+#dashboard {
+  display: none;
+}
+
+.relay-container {
+  max-width: 1000px;
+  margin: 30px auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.relay-card {
+  background: rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.relay-card:hover {
+  transform: translateY(-5px);
+}
+
+.relay-card h2 {
+  margin-bottom: 10px;
+}
+
+.relay-card p {
+  margin-bottom: 15px;
+}
+
+/* BUTTON */
+.relay-card button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* GLOBAL BUTTONS */
+#allOffBtn {
+  background: #ef4444;
+}
+
+#logoutBtn {
+  background: #6b7280;
+}
+
+#allOffBtn, #logoutBtn {
+  width: 250px;
+  margin: 10px auto;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  display: block;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#allOffBtn:hover {
+  background: #dc2626;
+}
+
+#logoutBtn:hover {
+  background: #4b5563;
+}
+
+/* FOOTER */
 .footer {
-  background: #111;
-  color: #fff;
-  padding: 15px 20px;
-}
-
-.footer-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer p {
-  margin: 5px 0;
+  margin-top: auto;
+  background: rgba(0,0,0,0.4);
+  padding: 15px;
+  text-align: center;
   font-size: 14px;
+  color: #ccc;
+  border-top: 1px solid rgba(255,255,255,0.1);
 }
   </style>
 </head>
@@ -187,35 +168,31 @@ main {
       <div class="relay-card">
         <h2>Lampe salon</h2>
         <p>Status: <span id="status1">Loading...</span></p>
-        <button id="btn1">Toggle</button>
+        <button id="btn4">ON / OFF</button>
       </div>
 
       <div class="relay-card">
         <h2>Lampe chambre</h2>
         <p>Status: <span id="status2">Loading...</span></p>
-        <button id="btn2">Toggle</button>
+        <button id="btn4">ON / OFF</button>
       </div>
 
       <div class="relay-card">
         <h2>Prise salon</h2>
         <p>Status: <span id="status3">Loading...</span></p>
-        <button id="btn3">Toggle</button>
+        <button id="btn4">ON / OFF</button>
       </div>
 
       <div class="relay-card">
         <h2>Prise chambre</h2>
         <p>Status: <span id="status4">Loading...</span></p>
-        <button id="btn4">Toggle</button>
+        <button id="btn4">ON / OFF</button>
       </div>
     </div>
 
     <button id="allOffBtn">All OFF</button>
-    <button id="logoutBtn">Logout</button>
+    <button id="btn4">ON / OFF</button>
   </div>
-
-  <footer>
-    Created by Tech StudyCell
-  </footer>
 
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
@@ -319,11 +296,9 @@ main {
         });
     };
   </script>
-	 <footer class="footer">
-  <div class="footer-container">
-    <p>Site développé par MS TECH.</p>
-    <p>© 2026 Tous droits réservés</p>
-  </div>
+	<footer class="footer">
+  <p>Site développé par MS TECH.</p>
+  <p>© 2026 Tous droits réservés</p>
 </footer>
 </body>
 </html>
