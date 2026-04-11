@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>ESP32 Relay Control Dashboard</title>
+  <title> Control Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
@@ -142,10 +142,38 @@
       padding: 10px 0;
       margin-top: 40px;
     }
+	  body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+main {
+  flex: 1;
+}
+
+.footer {
+  background: #111;
+  color: #fff;
+  padding: 15px 20px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer p {
+  margin: 5px 0;
+  font-size: 14px;
+}
   </style>
 </head>
 <body>
-
+<h1>Control Dashboard</h1>
   <!-- Login form -->
   <div id="loginForm">
     <input type="email" id="email" placeholder="Enter Email" required />
@@ -291,5 +319,11 @@
         });
     };
   </script>
+	 <footer class="footer">
+  <div class="footer-container">
+    <p>Site développé par MS TECH.</p>
+    <p>© 2026 Tous droits réservés</p>
+  </div>
+</footer>
 </body>
 </html>
