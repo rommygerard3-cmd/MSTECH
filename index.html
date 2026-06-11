@@ -1,306 +1,166 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Control Dashboard</title>
+<meta charset="UTF-8">
+<title>Energy Dashboard</title>
 
-<!-- FONT AWESOME ICONS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-* {
-  box-sizing: border-box;
+body{
+    font-family:Arial;
+    background:#0f172a;
+    color:white;
+    margin:0;
 }
 
-body {
-  font-family: "Segoe UI", Roboto, sans-serif;
-  margin: 0;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+header{
+    padding:15px;
+    background:#111c36;
+    display:flex;
+    justify-content:space-between;
 }
 
-h1 {
-  text-align: center;
-  margin-top: 30px;
+.container{
+    padding:20px;
 }
 
-/* LOGIN */
-#loginForm {
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 30px;
-  border-radius: 15px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
+.card{
+    background:#1e293b;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
 }
 
-#loginForm input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: none;
-  background: rgba(255,255,255,0.1);
-  color: white;
+table{
+    width:100%;
+    border-collapse:collapse;
 }
 
-#loginForm button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: #3b82f6;
-  color: white;
-  cursor: pointer;
-}
-
-/* DASHBOARD */
-#dashboard {
-  display: none;
-}
-
-.relay-container {
-  max-width: 1000px;
-  margin: 30px auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  padding: 0 15px;
-}
-
-/* CARD */
-.relay-card {
-  background: rgba(255,255,255,0.05);
-  padding: 20px;
-  border-radius: 15px;
-  text-align: center;
-}
-
-/* BUTTON */
-.relay-btn {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: 0.3s;
-  color: white;
-  background: #374151;
-}
-
-.relay-btn i {
-  font-size: 18px;
-}
-
-.relay-btn.on {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-}
-
-.relay-btn.off {
-  background: #374151;
-}
-
-.relay-btn:hover {
-  transform: scale(1.03);
-}
-
-/* GLOBAL BUTTONS */
-#allOffBtn, #logoutBtn {
-  width: 250px;
-  margin: 10px auto;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  color: white;
-  display: block;
-  cursor: pointer;
-}
-
-#allOffBtn { background: #ef4444; }
-#logoutBtn { background: #6b7280; }
-
-/* FOOTER */
-.footer {
-  margin-top: auto;
-  text-align: center;
-  padding: 15px;
-  color: #ccc;
+td,th{
+    padding:8px;
+    border-bottom:1px solid #334155;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Control Dashboard</h1>
+<header>
+    ⚡ Energy Monitor Pro
+    <button onclick="exportCSV()">Export CSV</button>
+</header>
 
-<!-- LOGIN -->
-<div id="loginForm">
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
-  <button id="loginBtn">Login</button>
+<div class="container">
+
+<div class="card">
+    <canvas id="chart"></canvas>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard">
-
-  <div class="relay-container">
-
-    <div class="relay-card">
-      <h2>Lampe salon</h2>
-      <p>Status: <span id="status1">...</span></p>
-      <button id="btn1" class="relay-btn">
-        <i class="fa-solid fa-lightbulb"></i> Lampe salon
-      </button>
-    </div>
-
-    <div class="relay-card">
-      <h2>Lampe chambre</h2>
-      <p>Status: <span id="status2">...</span></p>
-      <button id="btn2" class="relay-btn">
-        <i class="fa-solid fa-lightbulb"></i> Lampe chambre
-      </button>
-    </div>
-
-    <div class="relay-card">
-      <h2>Prise salon</h2>
-      <p>Status: <span id="status3">...</span></p>
-      <button id="btn3" class="relay-btn">
-        <i class="fa-solid fa-plug"></i> Prise salon
-      </button>
-    </div>
-
-    <div class="relay-card">
-      <h2>Prise chambre</h2>
-      <p>Status: <span id="status4">...</span></p>
-      <button id="btn4" class="relay-btn">
-        <i class="fa-solid fa-plug"></i> Prise chambre
-      </button>
-    </div>
-
-  </div>
-
-  <button id="allOffBtn">All OFF</button>
-  <button id="logoutBtn">Logout</button>
+<div class="card">
+    <h3>Historique</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Heure</th>
+                <th>V</th>
+                <th>I</th>
+                <th>P</th>
+            </tr>
+        </thead>
+        <tbody id="table"></tbody>
+    </table>
 </div>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+</div>
 
-<script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
+
 const firebaseConfig = {
-    apiKey: "AIzaSyDI5kGc8vX3JvOnI03IHPWRrvpwywp-ZEQ",
-    authDomain: "home-smart-e7d24.firebaseapp.com",
-    databaseURL: "https://home-smart-e7d24-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "home-smart-e7d24",
-    storageBucket: "home-smart-e7d24.firebasestorage.app",
-    messagingSenderId: "233750784705",
-    appId: "1:233750784705:web:cdcd0b5a4af63227b70240"
+  apiKey: "XXX",
+  databaseURL: "https://energy-upl-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "energy-upl"
 };
 
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-const allowedEmail = "mstech5000@gmail.com";
-const allowedPassword = "mstech5000";
+const mesuresRef = ref(db, "mesures");
 
-const loginForm = document.getElementById("loginForm");
-const dashboard = document.getElementById("dashboard");
-document.getElementById("loginBtn").onclick = async () => {
-  try {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
+let dataGlobal = [];
 
-    console.log("LOGIN CLICKED", email);
-
-    if (!email || !password) {
-      alert("Email ou mot de passe vide");
-      return;
+const chart = new Chart(document.getElementById("chart"), {
+    type: "line",
+    data: {
+        labels: [],
+        datasets: [{
+            label: "Puissance (W)",
+            data: [],
+            borderColor: "#38bdf8"
+        }]
     }
+});
 
-    const user = await firebase.auth()
-      .signInWithEmailAndPassword(email, password);
+onValue(mesuresRef, (snapshot) => {
 
-    console.log("LOGIN OK", user.user.email);
+    const data = snapshot.val();
+    if(!data) return;
 
-    loginForm.style.display = "none";
-    dashboard.style.display = "block";
+    dataGlobal = Object.values(data);
 
-    startRelay();
+    render();
+});
 
-  } catch (error) {
-    console.error("LOGIN ERROR:", error);
-    alert("Erreur login: " + error.message);
-  }
-};
+function render(){
 
-function startRelay(){
-  const db = firebase.database();
+    const table = document.getElementById("table");
+    table.innerHTML = "";
 
-  const relays = [1,2,3,4];
+    let labels = [];
+    let values = [];
 
-  relays.forEach(id => {
-    const ref = db.ref("relay"+id);
-    const status = document.getElementById("status"+id);
-    const btn = document.getElementById("btn"+id);
+    const last = dataGlobal.slice(-20);
 
-    ref.on("value", snap => {
-      const state = snap.val();
+    last.forEach(d => {
 
-      status.innerText = state ? "ON" : "OFF";
+        table.innerHTML += `
+        <tr>
+            <td>${d.timestamp}</td>
+            <td>${d.voltage}</td>
+            <td>${d.courant}</td>
+            <td>${d.puissance}</td>
+        </tr>`;
 
-      btn.classList.remove("on","off");
-      btn.classList.add(state ? "on" : "off");
-
-      const icon = btn.querySelector("i");
-
-      if(id <= 2){
-        icon.className = state
-          ? "fa-solid fa-lightbulb"
-          : "fa-regular fa-lightbulb";
-      } else {
-        icon.className = state
-          ? "fa-solid fa-plug-circle-bolt"
-          : "fa-solid fa-plug";
-      }
+        labels.push(d.timestamp);
+        values.push(d.puissance);
     });
 
-    btn.onclick = () => {
-      ref.get().then(snap => {
-        ref.set(!snap.val());
-      });
-    };
-  });
-
-  document.getElementById("allOffBtn").onclick = () => {
-    relays.forEach(id => {
-      db.ref("relay"+id).set(false);
-    });
-  };
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = values;
+    chart.update();
 }
 
-document.getElementById("logoutBtn").onclick = () => {
-  firebase.auth().signOut().then(() => {
-    dashboard.style.display = "none";
-    loginForm.style.display = "block";
-  });
-};
-</script>
+window.exportCSV = function(){
 
-<footer class="footer">
-  <p>Site développé par MS TECH</p>
-  <p>© 2026 Tous droits réservés</p>
-</footer>
+    let csv = "Timestamp,Voltage,Current,Power\n";
+
+    dataGlobal.forEach(d => {
+        csv += `${d.timestamp},${d.voltage},${d.courant},${d.puissance}\n`;
+    });
+
+    const blob = new Blob([csv], {type:"text/csv"});
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "energy_data.csv";
+    a.click();
+}
+
+</script>
 
 </body>
 </html>
